@@ -5,5 +5,5 @@ yarn.lock
 package-lock.json
 *.log
 .idea/
-index.js
-index.mjs
+/index.*
+!/*/index.*
