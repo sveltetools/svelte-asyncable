@@ -1,0 +1,34 @@
+{
+    "name": "svelte-asyncable",
+    "version": "1.0.0",
+    "description": "Asyncable store for Svelte which is store a value as promise.",
+    "main": "index.js",
+    "module": "index.mjs",
+    "scripts": {
+        "build": "rollup -c",
+        "prepublish": "npm run lint && npm run build",
+        "lint": "eslint src"
+    },
+    "files": [
+        "index.js",
+        "index.mjs"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/PaulMaly/svelte-asyncable.git"
+    },
+    "keywords": [
+        "svelte",
+        "svelte store"
+    ],
+    "author": "PaulMaly",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/PaulMaly/svelte-asyncable/issues"
+    },
+    "homepage": "https://github.com/PaulMaly/svelte-asyncable#readme",
+    "devDependencies": {
+        "eslint": "latest",
+        "rollup": "latest"
+    }
+}
