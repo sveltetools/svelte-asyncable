@@ -1,4 +1,4 @@
-# svelte-asyncable ([demo]())
+# svelte-asyncable ([demo](https://svelte.dev/repl/3f070579c1cb4892972e23055701b988?version=3.12.1))
 
 Asyncable store for [Svelte 3](https://svelte.dev/) which is store a value as promise.
 
