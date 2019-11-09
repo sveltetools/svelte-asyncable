@@ -1,6 +1,6 @@
 {
     "name": "svelte-asyncable",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Asyncable store for Svelte which is store a value as promise.",
     "main": "index.js",
     "module": "index.mjs",

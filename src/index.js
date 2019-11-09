@@ -22,14 +22,15 @@ export default function (getter, setter = () => {}, stores = []) {
 				const val = reducer(await value);
 				setter(await val);
 				return val;
-			});		
+			});
 		},
 		async set(value) {
+			value = await value;
 			store$.set(Promise.resolve(value));
-			setter(await value);
+			setter(value);
 		},
-		async get() {
-			return await get(store$);
+		get() {
+			return get(store$);
 		}
 	};
 }
