@@ -4,7 +4,7 @@ export default function (getter, setter = () => {}, stores = []) {
 
 	let resolve;
 	const initial = new Promise(res => resolve = res);
-	
+
 	const derived$ = derived(stores, values => values);
 
 	const store$ = writable(initial, set => {
@@ -18,6 +18,7 @@ export default function (getter, setter = () => {}, stores = []) {
 	return {
 		subscribe: store$.subscribe,
 		async update(reducer) {
+			if ( ! setter) return;
 			store$.update(async value => {
 				const val = reducer(await value);
 				setter(await val);
@@ -25,6 +26,7 @@ export default function (getter, setter = () => {}, stores = []) {
 			});
 		},
 		async set(value) {
+			if ( ! setter) return;
 			value = await value;
 			store$.set(Promise.resolve(value));
 			setter(value);
