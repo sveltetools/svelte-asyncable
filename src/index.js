@@ -20,16 +20,16 @@ export default function (getter, setter = () => {}, stores = []) {
 		async update(reducer) {
 			if ( ! setter) return;
 			store$.update(async value => {
-				const val = reducer(await value);
-				setter(await val);
+				const val = await reducer(await value);
+				await setter(val);
 				return val;
 			});
 		},
 		async set(value) {
 			if ( ! setter) return;
 			value = await value;
+			await setter(value);
 			store$.set(Promise.resolve(value));
-			setter(value);
 		},
 		get() {
 			return get(store$);

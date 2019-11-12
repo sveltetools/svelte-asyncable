@@ -1,5 +1,9 @@
 # svelte-asyncable changelog
 
+## 1.0.4
+
+* Perform `setter` before store update/set
+
 ## 1.0.3
 
 * Demo example added (REPL)
