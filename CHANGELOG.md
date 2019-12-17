@@ -1,5 +1,9 @@
 # svelte-asyncable changelog
 
+## 1.0.5
+
+* Pass previous value as a second argument of `setter`
+
 ## 1.0.4
 
 * Perform `setter` before store update/set

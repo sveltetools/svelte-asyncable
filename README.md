@@ -47,6 +47,8 @@ user$.update(user => {
 
 User data will be automatically fetched on first subscription and all subsequent changes will be automatically saved.
 
+`setter` also receives previous value to get the ability to compare current and previous values and make a more conscious side-effect.
+
 # Also asyncable store may depend on another store(s), for example:
 
 ```javascript

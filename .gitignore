@@ -1,8 +1,6 @@
 .DS_Store
 Thumbs.db
 node_modules
-yarn.lock
-package-lock.json
 *.log
 .idea/
 /index.*
