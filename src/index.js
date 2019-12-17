@@ -20,7 +20,8 @@ export default function (getter, setter = () => {}, stores = []) {
 		async update(reducer) {
 			if ( ! setter) return;
 			store$.update(async value => {
-				const val = await reducer(await value);
+				value = await value;
+				const val = await reducer(value);
 				await setter(val, value);
 				return val;
 			});
