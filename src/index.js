@@ -21,7 +21,7 @@ export default function (getter, setter = () => {}, stores = []) {
 			if ( ! setter) return;
 			store$.update(async value => {
 				value = await value;
-				const val = await reducer(value);
+				const val = await reducer(shallowCopy(value));
 				await setter(val, value);
 				return val;
 			});
@@ -36,4 +36,9 @@ export default function (getter, setter = () => {}, stores = []) {
 			return get(store$);
 		}
 	};
+}
+
+function shallowCopy(value) {
+	if (typeof value !== 'object' || value === null) return value;
+	return Array.isArray(value) ? [ ...value ] : { ...value };
 }

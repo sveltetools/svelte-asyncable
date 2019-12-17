@@ -1,5 +1,9 @@
 # svelte-asyncable changelog
 
+## 1.0.7
+
+* `reducer` should receive a shallow copy of current value.
+
 ## 1.0.6
 
 * Previous value should be resolved before passing to `setter`
