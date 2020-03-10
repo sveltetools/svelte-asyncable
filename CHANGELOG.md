@@ -1,5 +1,10 @@
 # svelte-asyncable changelog
 
+## 1.1.0
+* Added `svelte` as peerDependency
+* Used an optimistic UI approach and set new value instantly with rollback to previous value if `setter` failed.
+* Added simple check of new and old values before value update to prevent unnecessarily triggering for primitive values.
+
 ## 1.0.7
 
 * `reducer` should receive a shallow copy of current value.

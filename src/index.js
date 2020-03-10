@@ -15,22 +15,30 @@ export default function (getter, setter = () => {}, stores = []) {
 		});
 	});
 
+	async function set(newValue, oldValue) {
+		if (newValue === oldValue) return;
+		store$.set(Promise.resolve(newValue));
+		try {
+			await setter(newValue, oldValue);
+		} catch(err) {
+			store$.set(Promise.resolve(oldValue));
+			throw err;
+		}
+	}
+
 	return {
 		subscribe: store$.subscribe,
 		async update(reducer) {
 			if ( ! setter) return;
-			store$.update(async value => {
-				value = await value;
-				const val = await reducer(shallowCopy(value));
-				await setter(val, value);
-				return val;
-			});
+			const oldValue = await get(store$);
+			const newValue = await reducer(shallowCopy(oldValue));
+			await set(newValue, oldValue);
 		},
-		async set(value) {
+		async set(newValue) {
 			if ( ! setter) return;
-			value = await value;
-			await setter(value);
-			store$.set(Promise.resolve(value));
+			const oldValue = await get(store$);
+			newValue = await newValue;
+			await set(newValue, oldValue);
 		},
 		get() {
 			return get(store$);
