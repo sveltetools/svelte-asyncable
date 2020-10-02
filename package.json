@@ -1,6 +1,6 @@
 {
     "name": "svelte-asyncable",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "Async store for Svelte which is stored value as a promise.",
     "main": "index.js",
     "module": "index.mjs",
@@ -32,6 +32,6 @@
         "rollup": "latest"
     },
     "peerDependencies": {
-        "svelte": "latest"
+        "svelte": "3.x.x"
     }
 }

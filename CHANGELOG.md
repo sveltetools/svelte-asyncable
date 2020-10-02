@@ -1,5 +1,8 @@
 # svelte-asyncable changelog
 
+## 1.2.0
+* Now, if `getter` return `undefined` it means that store should keep current value.
+
 ## 1.1.0
 * Added `svelte` as peerDependency
 * Used an optimistic UI approach and set new value instantly with rollback to previous value if `setter` failed.

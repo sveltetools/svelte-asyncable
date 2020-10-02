@@ -57,6 +57,21 @@ const user = await user$.get();
 
 Important, subscription callback will be triggered with actual value only after side-effect completely performed.
 
+If `getter` return `undefined` current value would keeped. It's useful, if we need to skip next value when one of dependencies is triggering, but actual store value shouldn't be changed. For example, integration with `svelte-pathfinder`:
+
+```javascript
+const posts = asyncable(async ($path, $query) => {
+    if ($path.toString() === '/posts') {
+      const res = await fetch(`/posts?page=${$query.page || 1}`);
+      return res.json();
+    }
+  },
+  null, 
+  [ path, query ]
+);
+```
+
+
 ### Store with async side-effect that works as a `setter`.
 
 You can also pass async `setter` callback as a second argument. This function will be triggered with new and previous value on each update/set operation but not after `getter` call:

@@ -1,6 +1,6 @@
 import { writable, derived, get } from 'svelte/store';
 
-export default function (getter, setter = () => {}, stores = []) {
+export default function (getter, setter = () => { }, stores = []) {
 
 	let resolve;
 	const initial = new Promise(res => resolve = res);
@@ -9,7 +9,9 @@ export default function (getter, setter = () => {}, stores = []) {
 
 	const store$ = writable(initial, set => {
 		return derived$.subscribe(async (values = []) => {
-			const value = Promise.resolve(getter(...values));
+			let value = getter(...values);
+			if (value === undefined) return;
+			value = Promise.resolve(value);
 			set(value);
 			resolve(value);
 		});
@@ -20,7 +22,7 @@ export default function (getter, setter = () => {}, stores = []) {
 		store$.set(Promise.resolve(newValue));
 		try {
 			await setter(newValue, oldValue);
-		} catch(err) {
+		} catch (err) {
 			store$.set(Promise.resolve(oldValue));
 			throw err;
 		}
@@ -29,13 +31,13 @@ export default function (getter, setter = () => {}, stores = []) {
 	return {
 		subscribe: store$.subscribe,
 		async update(reducer) {
-			if ( ! setter) return;
+			if (!setter) return;
 			const oldValue = await get(store$);
 			const newValue = await reducer(shallowCopy(oldValue));
 			await set(newValue, oldValue);
 		},
 		async set(newValue) {
-			if ( ! setter) return;
+			if (!setter) return;
 			const oldValue = await get(store$);
 			newValue = await newValue;
 			await set(newValue, oldValue);
@@ -48,5 +50,5 @@ export default function (getter, setter = () => {}, stores = []) {
 
 function shallowCopy(value) {
 	if (typeof value !== 'object' || value === null) return value;
-	return Array.isArray(value) ? [ ...value ] : { ...value };
+	return Array.isArray(value) ? [...value] : { ...value };
 }
