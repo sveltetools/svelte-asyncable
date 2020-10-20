@@ -1,6 +1,6 @@
-import { writable, derived, get } from 'svelte/store';
+import { derived, writable, get } from 'svelte/store';
 
-export default function (getter, setter = () => { }, stores = []) {
+function index (getter, setter = () => { }, stores = []) {
 
 	let resolve;
 	const initial = new Promise(res => resolve = res);
@@ -52,3 +52,5 @@ function shallowCopy(value) {
 	if (typeof value !== 'object' || value === null) return value;
 	return Array.isArray(value) ? [...value] : { ...value };
 }
+
+export default index;

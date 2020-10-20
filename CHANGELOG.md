@@ -1,5 +1,9 @@
 # svelte-asyncable changelog
 
+## 1.3.0
+* Fix previous commit (forgot to resolve value before checking).
+* Now bundles are also shipping.
+
 ## 1.2.0
 * Now, if `getter` return `undefined` it means that store should keep current value.
 
