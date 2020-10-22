@@ -9,7 +9,7 @@ export default function (getter, setter = () => { }, stores = []) {
 
 	const store$ = writable(initial, set => {
 		return derived$.subscribe(async (values = []) => {
-			let value = await getter(...values);
+			let value = getter(...values);
 			if (value === undefined) return;
 			value = Promise.resolve(value);
 			set(value);

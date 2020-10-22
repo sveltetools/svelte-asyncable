@@ -1,5 +1,8 @@
 # svelte-asyncable changelog
 
+## 1.3.1
+* Rollback a part of the previous commit. The regression test shows that we couldn't resolve a value to check it for `undefiend`. If `getter` wants to keep the current value, it should return `undefined` in an obvious way.
+
 ## 1.3.0
 * Fix previous commit (forgot to resolve value before checking).
 * Now bundles are also shipping.
