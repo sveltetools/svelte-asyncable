@@ -1,13 +1,12 @@
 import { writable, derived, get } from 'svelte/store';
 
-export default function (getter, setter = () => { }, stores = []) {
-
+export function asyncable(getter, setter = () => {}, stores = []) {
 	let resolve;
-	const initial = new Promise(res => resolve = res);
+	const initial = new Promise((res) => (resolve = res));
 
-	const derived$ = derived(stores, values => values);
+	const derived$ = derived(stores, (values) => values);
 
-	const store$ = writable(initial, set => {
+	const store$ = writable(initial, (set) => {
 		return derived$.subscribe(async (values = []) => {
 			let value = getter(...values);
 			if (value === undefined) return;
@@ -44,8 +43,17 @@ export default function (getter, setter = () => { }, stores = []) {
 		},
 		get() {
 			return get(store$);
-		}
+		},
 	};
+}
+
+export function syncable(stores, initialValue) {
+	return derived(
+		stores,
+		($values, set) =>
+			(Array.isArray(stores) ? Promise.allSettled : Promise.resolve)($values).then(set),
+		initialValue
+	);
 }
 
 function shallowCopy(value) {

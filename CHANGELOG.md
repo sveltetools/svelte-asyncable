@@ -1,5 +1,19 @@
 # svelte-asyncable changelog
 
+# 2.0.1
+* Minor fix in `package.json`.
+
+# 2.0.0
+* (breaking change): `asyncable` now is not default export.
+* `syncable` store added.
+* Add types.
+
+# 1.4.1
+* Add babel and prettier configs to `package.json`.
+
+## 1.4.0
+* Repository structure, code formating etc. improvements.
+
 ## 1.3.1
 * Rollback a part of the previous commit. The regression test shows that we couldn't resolve a value to check it for `undefiend`. If `getter` wants to keep the current value, it should return `undefined` in an obvious way.
 

@@ -3,3 +3,6 @@ Thumbs.db
 node_modules
 *.log
 .idea/
+.sessions/
+.vscode/
+dist/*

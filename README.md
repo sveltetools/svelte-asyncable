@@ -1,10 +1,16 @@
-# Async store for Svelte 3 which is stored value as the Promise.
+# Super tiny, declarative, optimistic, async store for SvelteJS.
 
 [![NPM version](https://img.shields.io/npm/v/svelte-asyncable.svg?style=flat)](https://www.npmjs.com/package/svelte-asyncable) [![NPM downloads](https://img.shields.io/npm/dm/svelte-asyncable.svg?style=flat)](https://www.npmjs.com/package/svelte-asyncable)
 
 ## Features
 
-- Stores the value as the Promise.
+- Stores value as the Promise.
+- Lazy-initialization on-demand.
+- Transparent and declarative way to describing side-effects.
+- Lets you update the async data without manual resolving.
+- Can derive to the other store(s).
+- Immutable from the box.
+- Optimistic UI pattern included.
 
 ## Install
 
@@ -33,9 +39,9 @@ just before closing body tag.
 This callback allows you to establish an initial value of the store.
 
 ```javascript
-import asyncable from 'svelte-asyncable';
+import { asyncable } from 'svelte-asyncable';
 
-const user$ = asyncable(async () => {
+const user = asyncable(async () => {
   const res = await fetch('/user/me');
   return res.json();
 });
@@ -46,13 +52,13 @@ Important, that `getter` won't be triggered before the first subscription (lazy 
 If you need to have reactive subscription use `subscribe` method or just get current value (always the Promise) using `get` method:
 
 ```javascript
-user$.subscribe(async user => {
-  console.log('user', await user); // will be printed only after side-effect
+user.subscribe(async $user => {
+  console.log('user', await $user); // will be printed only after side-effect
 });
 
 // or once subscription
 
-const user = await user$.get();
+const $user = await user.get();
 ```
 
 Important, subscription callback will be triggered with actual value only after side-effect completely performed.
@@ -62,7 +68,7 @@ If `getter` return `undefined` current value would keeped. It's useful, if we ne
 ```javascript
 const posts = asyncable(async ($path, $query) => {
     if ($path.toString() === '/posts') {
-      const res = await fetch(`/posts?page=${$query.page || 1}`);
+      const res = await fetch(`/posts?page=${$query.params.page || 1}`);
       return res.json();
     }
   },
@@ -77,10 +83,10 @@ const posts = asyncable(async ($path, $query) => {
 You can also pass async `setter` callback as a second argument. This function will be triggered with new and previous value on each update/set operation but not after `getter` call:
 
 ```javascript
-const user$ = asyncable(fetchUser, async (newValue, prevValue) => {
+const user = asyncable(fetchUser, async ($newValue, $prevValue) => {
   await fetch('/user/me', {
     method: 'PUT',
-    body: JSON.stringify(newValue)
+    body: JSON.stringify($newValue)
   })
 });
 ```
@@ -88,24 +94,24 @@ const user$ = asyncable(fetchUser, async (newValue, prevValue) => {
 Every time store has changed side-effect will be performed.
 
 ```javascript
-user$.update(user => {
-  user.visits++;
-  return user;
+user.update($user => {
+  $user.visits++;
+  return $user;
 });
 
 // or just set
 
-user$.set(user);
+user.set(user);
 ```
 
 `setter` callback us also receives previous value to get the ability to compare current and previous values and make a more conscious side-effect. If `setter` failы store will automatically rollback value to the previous one.
 
 ```javascript
-const user$ = asyncable(fetchUser, async (newValue, prevValue) => {
-  if (newValue.email !== prevValue.email) {
+const user = asyncable(fetchUser, async ($newValue, $prevValue) => {
+  if ($newValue.email !== $prevValue.email) {
     throw new Error('Email cannot be modified.');
   }
-  await saveUser(newValue);
+  await saveUser($newValue);
 });
 ```
 
@@ -114,16 +120,16 @@ const user$ = asyncable(fetchUser, async (newValue, prevValue) => {
 If you'll pass the obvious falsy value (except `undefined`) as a second argument it'll make asyncable store is read-only.
 
 ```javascript
-const tags$ = asyncable(fetchTags, null);
+const tags = asyncable(fetchTags, null);
 
-tags$.subscribe(async tags => {
-  console.log('tags changed', await tags); // will never triggered
+tags.subscribe(async $tags => {
+  console.log('tags changed', await $tags); // will never triggered
 });
 
 // changes won't actually be applied
-tags$.update(tags => {
-  tags.push('new tag');
-  return tags;
+tags.update($tags => {
+  $tags.push('new tag');
+  return $tags;
 });
 ```
 
@@ -134,12 +140,12 @@ If you'll pass `undefined` as a second argument store will be writable but witho
 Also, an asyncable store may depend on another store(s). Just pass an array of such stores as a third argument. Related values will be passed as arguments of `getter`. For example dependence one asyncable store from another:
 
 ```javascript
-const userPosts$ = asyncable(async user => {
-  user = await user;
+const userPosts = asyncable(async $user => {
+  const user = await $user;
   return fetchPostsByUser(user.id);
-}, undefined, [ user$ ]);
+}, undefined, [ user ]);
 
-userPosts$.subscribe(async posts => {
+userPosts.subscribe(async posts => {
   console.log('user posts', await posts);
 });
 ```
@@ -148,8 +154,8 @@ userPosts$.subscribe(async posts => {
 
 ### Using with Svelte auto-subscriptions.
 
-```html
-{#await $user$}
+```svelte
+{#await $user}
   <p>Loading user...</p>
 {:then user}
   <b>{user.firstName}</b>
@@ -158,7 +164,7 @@ userPosts$.subscribe(async posts => {
 {/await}
 
 <script>
-  import { user$ } from './store.js';
+  import { user } from './store.js';
 </script>
 ```
 
@@ -173,16 +179,27 @@ function localStore(key, defaultValue) {
 }
 
 
-const todos$ = localStore('todos', []);
+const todos = localStore('todos', []);
 
 function addTodoItem(todo) {
-  todos$.update(todos => {
-    todos.push(todo);
-    return todos;
+  todos.update($todos => {
+    $todos.push(todo);
+    return $todos;
   });
 }
 
 ```
+
+### Get synchronous value from async store:
+
+```javascript
+import { syncable } from 'svelte-asyncable';
+
+const todosSync = syncable(todos, []);
+```
+
+Now you can use sync version of asyncable store in any places you don't need to have pending/fail states.
+
 
 ## License
 
