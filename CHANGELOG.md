@@ -1,5 +1,8 @@
 # svelte-asyncable changelog
 
+# 2.0.2
+* Improve typings.
+
 # 2.0.1
 * Minor fix in `package.json`.
 
