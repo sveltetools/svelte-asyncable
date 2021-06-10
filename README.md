@@ -104,7 +104,7 @@ user.update($user => {
 user.set(user);
 ```
 
-`setter` callback us also receives previous value to get the ability to compare current and previous values and make a more conscious side-effect. If `setter` failы store will automatically rollback value to the previous one.
+`setter` callback us also receives previous value to get the ability to compare current and previous values and make a more conscious side-effect. If `setter` fail store will automatically rollback value to the previous one.
 
 ```javascript
 const user = asyncable(fetchUser, async ($newValue, $prevValue) => {
