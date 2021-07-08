@@ -51,7 +51,9 @@ export function syncable(stores, initialValue) {
 	return derived(
 		stores,
 		($values, set) =>
-			(Array.isArray(stores) ? Promise.allSettled : Promise.resolve)($values).then(set),
+			(Array.isArray(stores) ? Promise.allSettled : Promise.resolve)
+				.call(Promise, $values)
+				.then(set),
 		initialValue
 	);
 }

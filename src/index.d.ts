@@ -1,6 +1,6 @@
 import type { Writable, Readable } from 'svelte/store';
 export type AsyncValue<T> = Promise<T>;
-export type Stores = [Readable<any>, ...Array<Readable<any>>];
+export type Stores = Readable<any> | [Readable<any>, ...Array<Readable<any>>];
 export type StoresValues<T> = T extends Readable<infer U> ? U : never;
 export interface Asyncable<T> extends Writable<AsyncValue<T>> {
     get: () => AsyncValue<T>;

@@ -1,5 +1,9 @@
 # svelte-asyncable changelog
 
+# 2.0.3
+* Fix `syncable` bug.
+* Improve typings.
+
 # 2.0.2
 * Improve typings.
 
