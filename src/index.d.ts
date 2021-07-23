@@ -6,10 +6,13 @@ export interface Asyncable<T> extends Writable<AsyncValue<T>> {
     get: () => AsyncValue<T>;
 }
 
-export function asyncable<S extends Stores, T>(
+export declare function asyncable<S extends Stores, T>(
     getter: (...values: StoresValues<S>[]) => AsyncValue<T> | T,
-    setter?: (newValue: T, oldValue: T) => AsyncValue<T> | T,
+    setter?: ((newValue: T, oldValue: T) => AsyncValue<T> | T) | unknown,
     stores?: S
 ): Asyncable<T>;
 
-export function syncable<T>(stores: Stores, initialValue?: T): Readable<T>;
+export declare function syncable<T>(
+    stores: Stores,
+    initialValue?: T
+): Readable<T>;
