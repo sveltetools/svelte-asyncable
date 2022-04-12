@@ -4,7 +4,6 @@ export type Updater<T> = (value: T) => AsyncValue<T> | T;
 export type Stores = Readable<T> | [Readable<T>, ...Array<Readable<T>>];
 export type StoresValues<T> = T extends Readable<infer U> ? U : never;
 
-
 export interface Asyncable<T> extends Readable<AsyncValue<T>> {
     get: () => AsyncValue<T>;
     set: (value: T) => void;
@@ -13,10 +12,8 @@ export interface Asyncable<T> extends Readable<AsyncValue<T>> {
 
 export declare function asyncable<T>(
     getter: () => AsyncValue<T> | T,
-    setter?: ((newValue: T, oldValue: T) => AsyncValue<T> | T) | unknown,
+    setter?: ((newValue: T, oldValue: T) => AsyncValue<T> | T) | unknown
 ): Asyncable<T>;
-
-
 
 export declare function asyncable<T, S extends Stores>(
     getter: (...values: StoresValues<S>[]) => AsyncValue<T> | T,
