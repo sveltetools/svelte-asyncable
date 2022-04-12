@@ -1,6 +1,6 @@
 {
     "name": "svelte-asyncable",
-    "version": "2.0.4",
+    "version": "2.1.0",
     "description": "Super tiny, declarative, optimistic, async store for SvelteJS.",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",

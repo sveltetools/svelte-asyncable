@@ -1,5 +1,9 @@
 # svelte-asyncable changelog
 
+# 2.1.0
+* Fix bug with error if oldValue is an error.
+* Improve typings.
+
 # 2.0.4
 * Improve typings.
 

@@ -31,15 +31,24 @@ export function asyncable(getter, setter = () => {}, stores = []) {
 		subscribe: store$.subscribe,
 		async update(reducer) {
 			if (!setter) return;
-			const oldValue = await get(store$);
-			const newValue = await reducer(shallowCopy(oldValue));
-			await set(newValue, oldValue);
+			let oldValue;
+			let newValue;
+			try {
+				oldValue = await get(store$);
+				newValue = await reducer(shallowCopy(oldValue));
+			} finally {
+				await set(newValue, oldValue);
+			}
 		},
 		async set(newValue) {
 			if (!setter) return;
-			const oldValue = await get(store$);
-			newValue = await newValue;
-			await set(newValue, oldValue);
+			let oldValue;
+			try {
+				oldValue = await get(store$);
+				newValue = await newValue;
+			} finally {
+				await set(newValue, oldValue);
+			}
 		},
 		get() {
 			return get(store$);
