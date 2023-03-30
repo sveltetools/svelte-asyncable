@@ -98,7 +98,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/sveltetools/asyncable.git"
+        "url": "git+https://github.com/sveltetools/svelte-asyncable.git"
     },
     "keywords": [
         "svelte",
@@ -107,9 +107,9 @@
     "author": "PaulMaly",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/sveltetools/asyncable/issues"
+        "url": "https://github.com/sveltetools/svelte-asyncable/issues"
     },
-    "homepage": "https://github.com/sveltetools/asyncable#readme",
+    "homepage": "https://github.com/sveltetools/svelte-asyncable#readme",
     "devDependencies": {
         "@babel/core": "^7.13.8",
         "@babel/preset-env": "^7.13.8",
