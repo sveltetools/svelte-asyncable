@@ -1,5 +1,6 @@
 # svelte-asyncable changelog
-
+# 2.1.1
+* Fix repository references.
 # 2.1.0
 * Fix bug with error if oldValue is an error.
 * Improve typings.
