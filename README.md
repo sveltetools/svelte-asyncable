@@ -70,13 +70,12 @@ const userStore = await user.get();
 
 Please note, the subscription callback will be triggered with the actual value only after a side-effect.
 
-If the `getter` or callback provided to `asyncable` returns `undefined`, the current value of the store is not updated. This may be useful, if we wish to only conditionally update the store.  For example, when using `svelte-pathfinder` if `$path` or `$query` are updated, we may only wish to update the posts store on when in the posts route:
+If the `getter` or callback provided to `asyncable` returns explicit `undefined` (or just return is omitted), the current value of the store won't updated. This may be useful, if we wish to only conditionally update the store.  For example, when using `svelte-pathfinder` if `$path` or `$query` are updated, we may only wish to update the posts store on when in the posts route:
 
 ```javascript
-const posts = asyncable(async ($path, $query) => {
+const posts = asyncable(($path, $query) => {
     if ($path.toString() === '/posts') {
-      const res = await fetch(`/posts?page=${$query.params.page || 1}`);
-      return res.json();
+      return fetch(`/posts?page=${$query.params.page || 1}`).then(res => res.json());
     }
   },
   null, 
@@ -215,7 +214,7 @@ However, if the data on which your store depends changes infrequently, you may w
 ```javascript
 export const pinsStore = asyncable(async () => {
     const $pinstStore = await pinsStore.get();
-    if ($pinstStore.length > 0) return;
+    if ($pinstStore.length > 0) return $pinstStore;
     return getAllPins();
 });
 ```
