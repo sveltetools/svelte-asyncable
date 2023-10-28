@@ -130,6 +130,6 @@
         "svelte": "^3.0.0"
     },
     "peerDependencies": {
-        "svelte": "3.x"
+        "svelte": "4.x"
     }
 }
